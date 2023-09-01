@@ -1,23 +1,30 @@
-version: "3"
-services:
-  mongodb:
-    image: mongo
+version: '3'   #version of latest docker compose
+services:      #list of the all the container goes from here .
+  my-app:
+    image: abhayraj19/myapp:tagname    #uploaded on docker registry of my account  https://hub.docker.com/repository/docker/abhayraj19/myapp/general
     ports:
-      - 27017:27017
-    environment:
+    - 3000:3000
+  mongodb:         #Service 1
+    image: mongo  # image from which it will be builted
+    ports:        #list of all the ports
+      - 27017:27017    #host:container_port
+    environment:     #environment variables
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=1234567890
+      - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - mongo-data:/data/db
   mongo-express:
     image: mongo-express
     restart: always # fixes MongoNetworkError when mongodb is not ready when mongo-express starts
     ports:
-      - 8081:8081
+      - 8080:8081
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=1234567890
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
       - ME_CONFIG_MONGODB_SERVER=mongodb
 volumes:
   mongo-data:
     driver: local
+
+
+#we don't need to create a seprate network like we created a mongo-network it by defaults create a seprate network
