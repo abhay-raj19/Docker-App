@@ -3,6 +3,7 @@ let path = require('path');
 let fs = require('fs');
 let MongoClient = require('mongodb').MongoClient;
 let bodyParser = require('body-parser');
+const { log } = require('console');
 let app = express();
 
 app.use(bodyParser.urlencoded({
@@ -34,6 +35,7 @@ let databaseName = "user-account";
 
 app.post('/update-profile', function (req, res) {
   let userObj = req.body;
+  console.log('connecting to db.....');
 
   MongoClient.connect(mongoUrlLocal, mongoClientOptions, function (err, client) {
     if (err) throw err;
@@ -46,6 +48,7 @@ app.post('/update-profile', function (req, res) {
 
     db.collection("users").updateOne(myquery, newvalues, {upsert: true}, function(err, res) {
       if (err) throw err;
+      console.log("1 document updated");
       client.close();
     });
 
